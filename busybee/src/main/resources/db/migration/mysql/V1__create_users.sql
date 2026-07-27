@@ -1,0 +1,7 @@
+CREATE TABLE users (
+    username VARCHAR(80) NOT NULL,
+    password_hash VARCHAR(100) NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (username)
+);

@@ -1,0 +1,14 @@
+package com.securefromscratch.busybee.extra;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
+public record ImportedTask(
+        String name,
+        String desc,
+        LocalDate dueDate,
+        LocalTime dueTime,
+        List<String> responsibilityOf
+) {
+}
