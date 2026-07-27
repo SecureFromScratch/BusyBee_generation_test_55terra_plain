@@ -13,11 +13,10 @@ permissions:
 
 jobs:
   analyze:
-    name: Analyze Java
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v7
 
       - name: Set up Java
@@ -25,7 +24,6 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-          cache: gradle
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -34,12 +32,15 @@ jobs:
           build-mode: manual
           queries: security-extended
 
-      - name: Make Gradle wrapper executable
-        run: chmod +x busybee/gradlew
+      - name: Build
+        shell: bash
+        run: |
+          cd "$GITHUB_WORKSPACE/busybee"
+          chmod +x gradlew
 
-      - name: Build BusyBee and helper project
-        working-directory: busybee
-        run: ./gradlew clean build -x test --no-daemon
+          test -f gradle/wrapper/gradle-wrapper.jar
+          pwd
+          ./gradlew clean build -x test --no-daemon
 
       - name: Analyze
         uses: github/codeql-action/analyze@v4
