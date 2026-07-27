@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v7
 
       - name: Set up Java
@@ -25,6 +25,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
+          cache: gradle
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -33,9 +34,12 @@ jobs:
           build-mode: manual
           queries: security-extended
 
+      - name: Make Gradle wrapper executable
+        run: chmod +x busybee/gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean build -x test
+      - name: Build BusyBee and helper project
+        working-directory: busybee
+        run: ./gradlew clean build -x test --no-daemon
 
       - name: Analyze
         uses: github/codeql-action/analyze@v4
